@@ -32,7 +32,7 @@ jobs:
           pip install pytest
 
       - name: Install playwright
-        run: playwright install --install-deps
+        run: playwright install --with-deps chromium
 
       - name: Test with pytest
         run: |

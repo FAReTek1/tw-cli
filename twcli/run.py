@@ -80,8 +80,7 @@ def run(sb3_file: bytes,
             return input(">> ")
 
     with sync_playwright() as playwright:
-        firefox = playwright.firefox
-        browser = firefox.launch(headless=headless)
+        browser = playwright.chromium.launch(headless=headless)
         page = browser.new_page()
 
         assert run_html_path.exists()
