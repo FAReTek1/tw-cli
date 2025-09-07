@@ -1,5 +1,5 @@
 import setuptools
-from twcli import __VERSION__
+from twcli.version import __VERSION__
 
 setuptools.setup(
     name="turbowarp-cli",

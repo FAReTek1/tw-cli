@@ -2,7 +2,8 @@ import argparse
 from typing import Optional
 from pathlib import Path
 
-from twcli import run, __VERSION__
+from twcli import run
+from twcli.version import __VERSION__
 
 
 class Args(argparse.Namespace):
