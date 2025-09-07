@@ -128,7 +128,13 @@
                 exit("BREAKPOINT", '1');
             }
         })
-
+        vm.addAddonBlock({
+            procedureCode: "\u200B\u200Bexit\u200B\u200B %s",
+            arguments: ["content"],
+            callback: ({content}, util) => {
+                exit("EXIT", content.toString());
+            }
+        })
         runtime.addListener('QUESTION', () => {
             console.log(`question asked`);
         });
