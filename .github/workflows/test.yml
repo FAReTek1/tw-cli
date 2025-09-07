@@ -32,7 +32,7 @@ jobs:
           pip install pytest
 
       - name: Install playwright
-        run: playwright install
+        run: playwright install --install-deps
 
       - name: Test with pytest
         run: |
