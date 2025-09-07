@@ -18,8 +18,8 @@ setuptools.setup(
     install_requires=open("requirements.txt").read(),
     keywords=["goboscript", "scratch", "turbowarp"],
     project_urls={
-        "Source": "https://github.com/FAReTek1/tw-cli",
-        "Documentation": "https://github.com/FAReTek1/tw-cli",
-        "Homepage": "https://github.com/FAReTek1/tw-cli/"
+        "Source": "https://github.com/inflated-goboscript/tw-cli",
+        "Documentation": "https://github.com/inflated-goboscript/tw-cli",
+        "Homepage": "https://github.com/inflated-goboscript/tw-cli"
     }
 )
