@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="turbowarp-cli",
-    version="v0.0.2",
+    version="v0.0.3",
     packages=setuptools.find_packages(),
 
     entry_points={
@@ -10,7 +10,7 @@ setuptools.setup(
             "twcli=twcli.__main__:main"
         ]
     },
-
+    include_package_data=True,
     author="faretek1",
     description="Run scratch projects in your terminal using turbowarp scaffolding",
     long_description_content_type="text/markdown",
