@@ -76,8 +76,8 @@ def run(sb3_file: bytes,
             return input(">> ")
 
     with sync_playwright() as playwright:
-        chromium = playwright.chromium
-        browser = chromium.launch(headless=headless)
+        firefox = playwright.firefox
+        browser = firefox.launch(headless=headless)
         page = browser.new_page()
         page.goto(f"file://{run_html_path}"
                   f"?project={base64.urlsafe_b64encode(sb3_file).decode()}")

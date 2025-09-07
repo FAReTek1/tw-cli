@@ -46,6 +46,7 @@
 
         const vm = scaffolding.vm;
         const runtime = vm.runtime;
+        let done = false;
         /**
          * @param name {string}
          * @param _default {string}
@@ -70,6 +71,11 @@
         }
 
         const exit = (msg = '', __override=undefined) => {
+            if (done) {
+                return;
+            }
+
+            done = true;
             let exitCode;
             if (__override !== undefined) {
                 exitCode = __override;
