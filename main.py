@@ -21,6 +21,10 @@ run_html_path = (__file_path__ / '..' / "run.html").resolve()
 
 
 def output_msg(msg: LogMessage):
+    """
+    Print a log message to console with colored formatting. Automatically used by run()
+    :param msg: Log message dictionary
+    """
     cat = msg['type']
     content = msg.get('content')
 
