@@ -50,4 +50,3 @@ def main():
                 if code != "0":
                     raise RuntimeError(code)
 
-            exit(code)
