@@ -1,4 +1,4 @@
-from twcli import run
+from twcli.run import run
 
 # manual
 
