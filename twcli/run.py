@@ -82,6 +82,8 @@ def run(sb3_file: bytes,
         page.goto(f"file://{run_html_path}"
                   f"?project={base64.urlsafe_b64encode(sb3_file).decode()}")
 
+        page.wait_for_function('() => typeof output !== "undefined"')
+
         running = True
 
         def dialogmanage(dialog):
