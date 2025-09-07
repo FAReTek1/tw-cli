@@ -101,7 +101,7 @@ def run(sb3_file: bytes,
             nonlocal output_i
             try:
                 output = page.evaluate("output")
-            except ReferenceError as e:
+            except Exception as e:
                 warnings.warn(f"Caught exception: {e}")
                 output = []
 
