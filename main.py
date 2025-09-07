@@ -1,4 +1,4 @@
-from src import run
+from twcli import run
 
 run(open("Project.sb3", "rb").read(), """\
 faretek
