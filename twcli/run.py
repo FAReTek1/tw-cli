@@ -4,12 +4,12 @@ import warnings
 from pathlib import Path
 from typing import TypedDict, Literal, Optional
 
-import rich
+from rich.console import Console
 
 # noinspection PyProtectedMember
 from playwright.sync_api import sync_playwright
 
-CONSOLE = rich.get_console()
+CONSOLE = Console(force_terminal=True)
 
 class LogMessage(TypedDict):
     type: Literal['log', 'warn', 'error', 'breakpoint', 'exit_code', 'say', 'think']
@@ -91,9 +91,8 @@ def run(sb3_file: bytes,
 
         while True:
             if not page.query_selector("#project"):
-                print("#project not found")
+                warnings.warn("#project not found")
             else:
-                print("found #project")
                 break
 
         running = True
