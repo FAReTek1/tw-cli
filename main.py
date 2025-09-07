@@ -45,11 +45,18 @@ def output_msg(msg: LogMessage):
             CONSOLE.print(f"{msg['type']}: {msg.get('content', '')!r}")
 
 
-def run(sb3_file: bytes, input_args_str: str = '', headless: bool = False):
+def run(sb3_file: bytes, input_args_str: str = '', headless: bool = False) -> list[LogMessage]:
+    """
+    Run a scratch project.
+    :param sb3_file: Scratch project to run, in bytes
+    :param input_args_str: arguments that are passed to any 'ask' ui, split by newlines. If these run out, then you will be prompted
+    :param headless: Whether to run playwright in headless mode (whether to hide the window)
+    :return: List of log messages from scratch project
+    """
     input_args: list[str] = input_args_str.split('\n')
 
     def get_arg():
-        return input_args.pop(0) if input_args else ''
+        return input_args.pop(0) if input_args else input(">> ")
 
     with sync_playwright() as playwright:
         chromium = playwright.chromium
@@ -96,8 +103,7 @@ def run(sb3_file: bytes, input_args_str: str = '', headless: bool = False):
 if __name__ == '__main__':
     run(open("Project.sb3", "rb").read(), """\
 faretek
-yes
-no""", headless=True)  # 0.5
+yes""", headless=True)  # 0.5 no
     run(open("Project.sb3", "rb").read(), """\
 faretek
 yes
