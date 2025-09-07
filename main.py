@@ -1,8 +1,14 @@
 from twcli import run
 
+# manual
+
+run(open("Project.sb3", "rb").read(), headless=False)
+
+# not manual
+
 run(open("Project.sb3", "rb").read(), """\
 faretek
-yes""") # input last arg manually
+yes""")  # input last arg manually
 
 run(open("Project.sb3", "rb").read(), """\
 faretek

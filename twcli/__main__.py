@@ -1,7 +1,15 @@
 import argparse
+from typing import Optional
+from pathlib import Path
+
+from twcli import run
+
 
 class Args(argparse.Namespace):
-    ...
+    command: Optional[str]
+    project: Optional[str]
+    input: Optional[list[str]]
+    headed: Optional[bool]
 
 def main():
     parser = argparse.ArgumentParser(
@@ -13,7 +21,23 @@ def main():
     subparsers = parser.add_subparsers(dest="command")
 
     run_parser = subparsers.add_parser("run", description="run a scratch project")
+    run_parser.add_argument("project", help="Project path")
+    run_parser.add_argument("-i", "--input", nargs="*", dest="input", help="Project input for ask blocks")
+    run_parser.add_argument("-H", "--headed", action="store_true", dest="headed", help="Whether to disable headless mode")
 
     args = parser.parse_args(namespace=Args())
 
-    print(args.__dict__)
+    match args.command:
+        case "run":
+            path = Path(args.project).resolve()
+            assert path.exists(), f"Could not find project at {path}"
+
+            print(f"Running {path}")
+
+            project_input = None
+            if args.input is not None:
+                project_input = '\n'.join(args.input)
+
+            print(f"Args: {project_input!r}")
+
+            run(path.read_bytes(), project_input, headless=not args.headed)

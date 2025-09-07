@@ -49,7 +49,10 @@ def output_msg(msg: LogMessage):
             CONSOLE.print(f"{msg['type']}: {msg.get('content', '')!r}")
 
 
-def run(sb3_file: bytes, input_args_str: Optional[str] = None, headless: bool = True) -> list[LogMessage]:
+def run(sb3_file: bytes,
+        input_args_str: Optional[str] = None,
+        *,
+        headless: bool = True) -> list[LogMessage]:
     """
     Run a scratch project.
     :param sb3_file: Scratch project to run, in bytes
