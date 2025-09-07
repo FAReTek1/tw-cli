@@ -60,7 +60,12 @@ def run(sb3_file: bytes, input_args_str: str = '', headless: bool = False) -> li
     input_args: list[str] = input_args_str.split('\n')
 
     def get_arg():
-        return input_args.pop(0) if input_args else input(">> ")
+        if input_args:
+            arg = input_args.pop(0)
+            CONSOLE.print(f">> {arg!r}")
+            return arg
+        else:
+            return input(">> ")
 
     with sync_playwright() as playwright:
         chromium = playwright.chromium
