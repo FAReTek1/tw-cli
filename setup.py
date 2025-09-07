@@ -5,11 +5,11 @@ setuptools.setup(
     version="v0.0.0",
     packages=setuptools.find_packages(),
 
-    # entry_points={
-    #     "console_scripts": [
-    #         "twcli=twcli.__main__:main"
-    #     ]
-    # },
+    entry_points={
+        "console_scripts": [
+            "twcli=twcli.__main__:main"
+        ]
+    },
 
     author="faretek1",
     description="Run scratch projects in your terminal using turbowarp scaffolding",
