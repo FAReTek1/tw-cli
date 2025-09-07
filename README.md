@@ -8,9 +8,14 @@
 
 ## Installation
 
+`pip install turbowarp-cli`
+
+<details>
+<summary>Bleeding edge:</summary>
 1. git clone this repo
 2. `pip install -e .`
 3. to update, use `git pull`
+</details>
 
 ## Usage
 
