@@ -48,7 +48,8 @@
         const runtime = vm.runtime;
         /**
          * @param name {string}
-         * @param _default
+         * @param _default {string}
+         * @return {string}
          */
         get_tw_cli_var = (name, _default=undefined) => {
             name = `TW-CLI: ${name}`;
@@ -65,7 +66,7 @@
 
             console.log(`default: ${_default}`);
 
-            return _default;
+            return _default.toString();  // we must always output a string.
         }
 
         const exit = (msg = '', __override=undefined) => {
@@ -124,7 +125,7 @@
                     type: "breakpoint",
                     // util: util,
                 })
-                exit("BREAKPOINT", 1);
+                exit("BREAKPOINT", '1');
             }
         })
 
