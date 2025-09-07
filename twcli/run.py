@@ -49,7 +49,7 @@ def output_msg(msg: LogMessage):
             CONSOLE.print(f"{msg['type']}: {msg.get('content', '')!r}")
 
 
-def run(sb3_file: bytes, input_args_str: str = '', headless: bool = True) -> list[LogMessage]:
+def run(sb3_file: bytes, input_args_str: Optional[str] = None, headless: bool = True) -> list[LogMessage]:
     """
     Run a scratch project.
     :param sb3_file: Scratch project to run, in bytes
@@ -57,7 +57,11 @@ def run(sb3_file: bytes, input_args_str: str = '', headless: bool = True) -> lis
     :param headless: Whether to run playwright in headless mode (whether to hide the window)
     :return: List of log messages from scratch project
     """
-    input_args: list[str] = input_args_str.split('\n')
+    input_args: list[str]
+    if input_args_str is None:
+        input_args = []
+    else:
+        input_args = input_args_str.split('\n')
 
     def get_arg():
         if input_args:
