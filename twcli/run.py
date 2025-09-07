@@ -82,7 +82,12 @@ def run(sb3_file: bytes,
         page.goto(f"file://{run_html_path}"
                   f"?project={base64.urlsafe_b64encode(sb3_file).decode()}")
 
-        page.wait_for_function('() => typeof output !== "undefined"')
+        while True:
+            if not page.query_selector("#project"):
+                print(page.content())
+            else:
+                print("found #project")
+                break
 
         running = True
 
