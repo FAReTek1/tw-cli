@@ -99,8 +99,12 @@ def run(sb3_file: bytes,
             Handle and return output. If new messages are received, print them.
             """
             nonlocal output_i
+            try:
+                output = page.evaluate("output")
+            except ReferenceError as e:
+                warnings.warn(f"Caught exception: {e}")
+                output = []
 
-            output = page.evaluate("output")
             while len(output) > output_i:
                 output_msg(output[output_i])
                 output_i += 1
