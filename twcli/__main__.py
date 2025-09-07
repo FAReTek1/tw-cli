@@ -2,7 +2,7 @@ import argparse
 from typing import Optional
 from pathlib import Path
 
-from twcli import run
+from twcli import run, __VERSION__
 
 
 class Args(argparse.Namespace):
@@ -16,7 +16,7 @@ def main():
     parser = argparse.ArgumentParser(
         prog="twcli",
         description="Run scratch projects in your terminal using turbowarp scaffolding",
-        epilog=""
+        epilog=f"{__VERSION__=}"
     )
 
     subparsers = parser.add_subparsers(dest="command")
