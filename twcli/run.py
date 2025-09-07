@@ -79,15 +79,18 @@ def run(sb3_file: bytes,
         firefox = playwright.firefox
         browser = firefox.launch(headless=headless)
         page = browser.new_page()
+        print(f"{run_html_path.read_text()=}")
         page.goto(f"file://{run_html_path}"
                   f"?project={base64.urlsafe_b64encode(sb3_file).decode()}")
 
+        print("looking for page content")
         while True:
             if not page.query_selector("#project"):
                 print(page.content())
             else:
                 print("found #project")
                 break
+        print(f"found content: {page.content()=}")
 
         running = True
 
