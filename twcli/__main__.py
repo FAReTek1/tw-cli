@@ -2,7 +2,7 @@ import argparse
 from typing import Optional
 from pathlib import Path
 
-from twcli import run
+from twcli.run import run
 from twcli import __version__
 
 
