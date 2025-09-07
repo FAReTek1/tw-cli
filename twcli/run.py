@@ -20,6 +20,9 @@ __file_path__ = Path(__file__).resolve()
 run_html_path = (__file_path__ / '..' / "run.html").resolve()
 tw_scaffolding_path = (__file_path__ / '..' / "scaffolding-with-music.js").resolve()
 
+def get_exit_code(output: list[LogMessage], default: Optional[str]=None) -> Optional[str]:
+    ret = output[-1]
+    return ret["content"] if ret["type"] == "exit_code" else default
 
 def output_msg(msg: LogMessage):
     """

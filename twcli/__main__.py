@@ -2,7 +2,7 @@ import argparse
 from typing import Optional
 from pathlib import Path
 
-from twcli.run import run
+from twcli.run import run, get_exit_code
 from twcli import __version__
 
 
@@ -43,8 +43,8 @@ def main():
 
             print(f"Args: {project_input!r}")
 
-            ret = run(path.read_bytes(), project_input, headless=not args.headed)[-1]
-            code = ret["content"] if ret["type"] == "exit_code" else "0"
+            ret = run(path.read_bytes(), project_input, headless=not args.headed)
+            code = get_exit_code(ret, "0")
 
             if args.raise_status:
                 if code != "0":
