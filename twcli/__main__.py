@@ -40,4 +40,7 @@ def main():
 
             print(f"Args: {project_input!r}")
 
-            run(path.read_bytes(), project_input, headless=not args.headed)
+            ret = run(path.read_bytes(), project_input, headless=not args.headed)[-1]
+            code = ret["content"] if ret["type"] == "exit_code" else "0"
+
+            exit(code)
