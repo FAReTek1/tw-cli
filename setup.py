@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="turbowarp-cli",
-    version="v0.0.10",
+    version="v0.0.11",
     packages=setuptools.find_packages(),
 
     entry_points={

@@ -1,1 +1,1 @@
-include *.md LICENSE requirements.txt CHANGELOG twcli/run.html
+include *.md LICENSE requirements.txt CHANGELOG twcli/run.html, twcli/scaffolding-with-music.js

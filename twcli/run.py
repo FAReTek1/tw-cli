@@ -18,6 +18,7 @@ class LogMessage(TypedDict):
 
 __file_path__ = Path(__file__).resolve()
 run_html_path = (__file_path__ / '..' / "run.html").resolve()
+tw_scaffolding_path = (__file_path__ / '..' / "scaffolding-with-music.js").resolve()
 
 
 def output_msg(msg: LogMessage):
@@ -79,18 +80,19 @@ def run(sb3_file: bytes,
         firefox = playwright.firefox
         browser = firefox.launch(headless=headless)
         page = browser.new_page()
-        print(f"{run_html_path.read_text()=}")
+
+        assert run_html_path.exists()
+        assert tw_scaffolding_path.exists()
+
         page.goto(f"file://{run_html_path}"
                   f"?project={base64.urlsafe_b64encode(sb3_file).decode()}")
 
-        print("looking for page content")
         while True:
             if not page.query_selector("#project"):
-                print(page.content())
+                print("#project not found")
             else:
                 print("found #project")
                 break
-        print(f"found content: {page.content()=}")
 
         running = True
 
