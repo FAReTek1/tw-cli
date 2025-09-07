@@ -64,6 +64,7 @@ def run(sb3_file: bytes, input_args_str: Optional[str] = None, headless: bool = 
         input_args = input_args_str.split('\n')
 
     def get_arg():
+        get_output()
         if input_args:
             arg = input_args.pop(0)
             CONSOLE.print(f">> {arg!r}")
