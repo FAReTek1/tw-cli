@@ -1,10 +1,15 @@
 import base64
-import json
 import warnings
-from io import TextIOWrapper
+
 from pathlib import Path
 from typing import TypedDict, Literal, Optional
 
+import rich
+
+# noinspection PyProtectedMember
+from playwright.sync_api import sync_playwright
+
+CONSOLE = rich.get_console()
 
 class LogMessage(TypedDict):
     type: Literal['log', 'warn', 'error', 'breakpoint', 'exit_code', 'say', 'think']
@@ -14,32 +19,30 @@ class LogMessage(TypedDict):
 __file_path__ = Path(__file__).resolve()
 run_html_path = (__file_path__ / '..' / "run.html").resolve()
 
-# noinspection PyProtectedMember
-from playwright.sync_api import sync_playwright
-
 
 def output_msg(msg: LogMessage):
     cat = msg['type']
     content = msg.get('content')
 
+    # noinspection PyUnreachableCode
     match cat:
         case 'log':
-            print(f"Log: {content!r}")
+            CONSOLE.print(f"Log: {content!r}", style="green")
         case 'warn':
-            print(f"Warn: {content!r}")
+            CONSOLE.print(f"Warn: {content!r}", style="yellow")
         case 'error':
-            print(f"Error: {content!r}")
+            CONSOLE.print(f"Error: {content!r}", style="red")
         case 'breakpoint':
-            print(f"Breakpoint")
+            CONSOLE.print(f"Breakpoint", style="red")
         case 'exit_code':
-            print(f"Exited with code {content!r}")
+            CONSOLE.print(f"Exited with code {content!r}", style="default")
         case 'say':
-            print(f"Say: {content!r}")
+            CONSOLE.print(f"Say: {content!r}", style="purple")
         case 'think':
-            print(f"Think: {content!r}")
+            CONSOLE.print(f"Think: {content!r}", style="purple")
         case _:
             warnings.warn(f"Unknown message: {msg!r}")
-            print(f"{msg['type']}: {msg.get('content', '')!r}")
+            CONSOLE.print(f"{msg['type']}: {msg.get('content', '')!r}")
 
 
 def run(sb3_file: bytes, input_args_str: str = '', headless: bool = False):
@@ -91,14 +94,14 @@ def run(sb3_file: bytes, input_args_str: str = '', headless: bool = False):
 
 
 if __name__ == '__main__':
-    print(run(open("Project.sb3", "rb").read(), """\
+    run(open("Project.sb3", "rb").read(), """\
 faretek
 yes
-no""", headless=True))  # 0.5
-    print(run(open("Project.sb3", "rb").read(), """\
+no""", headless=True)  # 0.5
+    run(open("Project.sb3", "rb").read(), """\
 faretek
 yes
-yes""", headless=True))  # 1.5
-    print(run(open("Project.sb3", "rb").read(), """\
+yes""", headless=True)  # 1.5
+    run(open("Project.sb3", "rb").read(), """\
 faretek
-no""", headless=True))  # 1
+no""", headless=True)  # 1
