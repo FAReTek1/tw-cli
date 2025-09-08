@@ -68,6 +68,9 @@ def run(sb3_file: bytes,
     :param timeout: How long to wait for the project to run, after being ready. This is usually only relevant for empty projects.
     :return: List of log messages from scratch project
     """
+    for arg in input_args:
+        assert '\n' not in arg, f"Input arg {arg!r} should not contain newline."
+
     assert isinstance(timeout, int)
     assert timeout > 0
 
