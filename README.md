@@ -2,6 +2,12 @@
 
 > Run scratch projects in the terminal
 
+> [!WARNING]
+> These install instructions may not be enough if you are
+> running a linux distro not directly supported by playright, e.g. arch.
+> Make sure you can open chromium with playright with `playwright open` 
+> before trying to use tw-cli
+
 - Uses playwright and turbowarp scaffolding
 - Supports the turbowarp debugger's log, warn, error and breakpoint blocks.
 - Supports exit codes with the `TW-CLI: exit code` variable **for all sprites**.
