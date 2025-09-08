@@ -6,10 +6,10 @@ from twcli.run import run
 
 # not manual
 
-run(open("Project.sb3", "rb").read(), [
-    "faretek",
-    "yes"
-])  # input last arg manually
+# run(open("Project.sb3", "rb").read(), [
+#     "faretek",
+#     "yes"
+# ])  # input last arg manually
 
 run(open("Project.sb3", "rb").read(), [
     "faretek",
