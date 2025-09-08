@@ -43,7 +43,7 @@ def output_msg(msg: LogMessage):
         case 'breakpoint':
             CONSOLE.print(f"Breakpoint", style="red")
         case 'exit_code':
-            CONSOLE.print(f"Exited with code {content!r}", style="default")
+            CONSOLE.print(f"Exited with code {content}", style="default")
         case 'say':
             CONSOLE.print(f"Say: {content!r}", style="purple")
         case 'think':

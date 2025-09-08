@@ -76,22 +76,16 @@
             return _default.toString();  // we must always output a string.
         }
 
-        const exit = (__override = undefined) => {
+        const exit = (exitCode) => {
             if (done) {
                 // If we already started the exit process, don't start queueing another
                 return;
             }
 
             done = true;
-            let exitCode;
-            if (__override !== undefined) {
-                exitCode = __override;
-            } else {
-                exitCode = get_tw_cli_var("exit code", 0).toString();
-            }
             output.push({
                 type: "exit_code",
-                content: exitCode,
+                content: exitCode.toString(),
             })
             window.alert(`RUNTIME: PROJECT DONE`);
         }
@@ -138,19 +132,9 @@
                     type: "breakpoint",
                     // util: util,
                 })
-                exit('1');
+                exit(1);
             }
         })
-        vm.addAddonBlock({
-            procedureCode: "\u200B\u200Bexit\u200B\u200B %s",
-            arguments: ["content"],
-            callback: ({content}, util) => {
-                exit(content.toString());
-            }
-        })
-        runtime.addListener('QUESTION', () => {
-            console.log(`question asked`);
-        });
 
         runtime.addListener('SAY', (target, type, msg) => {
             if (msg !== '') {
@@ -162,18 +146,12 @@
             }
         });
 
-        runtime.addListener('PROJECT_RUN_STOP', (question) => {
-            exit("PROJECT_RUN_STOP");
+        runtime.addListener('PROJECT_RUN_STOP', () => {
+            exit('0');
         });
 
-        const logOnEvent = (type) => {
-            runtime.addListener(type, () => {
-                console.log(`RUNTIME EVENT: ${type}`);
-            });
-        }
-
         // once the project is started and is ready to run, it should run
-        // it wont if it's empty (i think)
+        // it won't if it's empty (I think)
         // add a time check, starting on PROJECT_START,
         // and checking if PROJECT_RUN_START occurs within `timeout` milliseconds
         runtime.addListener('PROJECT_START', async () => {
@@ -183,7 +161,7 @@
             let project_run_started = false;
             runtime.addListener('PROJECT_RUN_START', () => {
                 project_run_started = true;
-            });
+            })
 
             await delay(timeout);
             if ((Date.now() - project_run_started) > timeout) {
@@ -194,18 +172,25 @@
                         type: "did_not_run",
                         content: `Project failed to run within ${timeout} ms. Is it empty?`,
                     })
-                    exit('', "1")
+                    exit("1")
                 }
             }
         });
 
-        logOnEvent("PROJECT_START");
-        logOnEvent("PROJECT_RUN_START");
-        logOnEvent("VISUAL_REPORT");
-        logOnEvent("RUNTIME_STARTED");
-        logOnEvent("RUNTIME_DISPOSED");
+        // This small function helps see the scratch vm's event listener stuff in practice. useful for testing.
+        const logOnEvent = (type) => {
+            runtime.addListener(type, () => {
+                console.log(`RUNTIME EVENT: ${type}`);
+            });
+        }
 
-        console.log("RUNTIME: PROJECT READY");
+        // logOnEvent("PROJECT_START");
+        // logOnEvent("PROJECT_RUN_START");
+        // logOnEvent("VISUAL_REPORT");
+        // logOnEvent("RUNTIME_STARTED");
+        // logOnEvent("RUNTIME_DISPOSED");
+
+        console.log("GREENFLAG");
         scaffolding.greenFlag();
     })();
 
