@@ -56,26 +56,20 @@ def output_msg(msg: LogMessage):
 
 
 def run(sb3_file: bytes,
-        input_args_str: Optional[str] = None,
+        input_args: list[str] = None,
         *,
         headless: bool = True,
         timeout: int = 1000) -> list[LogMessage]:
     """
     Run a scratch project.
     :param sb3_file: Scratch project to run, in bytes
-    :param input_args_str: arguments that are passed to any 'ask' ui, split by newlines. If these run out, then you will be prompted
+    :param input_args: arguments that are passed to any 'ask' ui. If these run out, then you will be prompted
     :param headless: Whether to run playwright in headless mode (whether to hide the window)
     :param timeout: How long to wait for the project to run, after being ready. This is usually only relevant for empty projects.
     :return: List of log messages from scratch project
     """
     assert isinstance(timeout, int)
     assert timeout > 0
-
-    input_args: list[str]
-    if input_args_str is None:
-        input_args = []
-    else:
-        input_args = input_args_str.split('\n')
 
     def get_arg():
         get_output()

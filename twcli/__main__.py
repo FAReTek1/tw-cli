@@ -37,16 +37,13 @@ def main():
 
             print(f"Running {path}")
 
-            project_input = None
-            if args.input is not None:
-                project_input = '\n'.join(args.input)
+            if args.input is None:
+                args.input = []
 
             print(f"Args: {args.input}")
 
-            ret = run(path.read_bytes(), project_input, headless=not args.headed)
+            ret = run(path.read_bytes(), args.input, headless=not args.headed)
             code = get_exit_code(ret, "0")
 
-            if args.raise_status:
-                if code != "0":
-                    raise RuntimeError(code)
-
+            if code == '1':
+                raise RuntimeError(f"Exit code 1; Project failed. Check your logs, and your sb3.")
