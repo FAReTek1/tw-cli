@@ -42,6 +42,13 @@ If you want to disable headless mode (to see the browser), use `-H`:
 
 `twcli run .\Project.sb3 -i "hi" "there" -H`
 
-If you want to raise an error if the exit code is not `'0'`, use `-R`:
+If the exit code is 1, a Runtime error will always be raised.
+The only way to exit with code 1 is with a breakpoint block.
+Otherwise, the program will exit with code 0 when it naturally stops.
 
-`twcli run .\Project.sb3 -i "hi" "there" -R`
+If you want to use your own 'error codes'
+
+1. Use the error block. This will print in red but not exit the program
+2. Use the breakpoint block
+
+This is ^^ intentional design to keep things simpler.
