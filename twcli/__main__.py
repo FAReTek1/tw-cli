@@ -41,7 +41,7 @@ def main():
             if args.input is not None:
                 project_input = '\n'.join(args.input)
 
-            print(f"Args: {project_input!r}")
+            print(f"Args: {args.input}")
 
             ret = run(path.read_bytes(), project_input, headless=not args.headed)
             code = get_exit_code(ret, "0")
