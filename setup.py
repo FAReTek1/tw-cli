@@ -20,7 +20,7 @@ setuptools.setup(
     keywords=["goboscript", "scratch", "turbowarp"],
     project_urls={
         "Source": "https://github.com/inflated-goboscript/tw-cli",
-        "Documentation": "https://github.com/inflated-goboscript/tw-cli",
-        "Homepage": "https://github.com/inflated-goboscript/tw-cli"
+        "Documentation": "https://inflated-goboscript.github.io/tw-cli/",
+        "Homepage": "https://inflated-goboscript.github.io/"
     }
 )
