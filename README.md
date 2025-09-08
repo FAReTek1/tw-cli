@@ -41,3 +41,7 @@ This provides the arguments:
 If you want to disable headless mode (to see the browser), use `-H`:
 
 `twcli run .\Project.sb3 -i "hi" "there" -H`
+
+If you want to raise an error if the exit code is not `'0'`, use `-R`:
+
+`twcli run .\Project.sb3 -i "hi" "there" -R`
