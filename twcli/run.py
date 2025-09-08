@@ -104,13 +104,14 @@ def run(sb3_file: bytes,
 
         running = True
 
-        def dialogmanage(dialog):
-            # when a dialog pops up, we just exit. assume its the end of the program
+        def accept_all_dialogs(dialog):
+            # when a dialog pops up, we just exit. assume it's the end of the program
+            # if need be, assert the message in the dialog is correct.
             nonlocal running
             dialog.accept()
             running = False
 
-        page.on("dialog", dialogmanage)
+        page.on("dialog", accept_all_dialogs)
 
         output_i = 0  # index of next message
 
