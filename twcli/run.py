@@ -2,7 +2,7 @@ import base64
 import warnings
 
 from pathlib import Path
-from typing import TypedDict, Literal, Optional
+from typing import TypedDict, Literal, Optional, Iterable
 
 from rich.console import Console
 
@@ -56,7 +56,7 @@ def output_msg(msg: LogMessage):
 
 
 def run(sb3_file: bytes,
-        input_args: list[str] = None,
+        input_args: Iterable[str] = (),
         *,
         headless: bool = True,
         timeout: int = 1000) -> list[LogMessage]:
@@ -68,8 +68,10 @@ def run(sb3_file: bytes,
     :param timeout: How long to wait for the project to run, after being ready. This is usually only relevant for empty projects.
     :return: List of log messages from scratch project
     """
-    for arg in input_args:
-        assert '\n' not in arg, f"Input arg {arg!r} should not contain newline."
+    input_args = list(input_args)
+
+    for iarg in input_args:
+        assert '\n' not in iarg, f"Input arg {iarg!r} should not contain newline."
 
     assert isinstance(timeout, int)
     assert timeout > 0
