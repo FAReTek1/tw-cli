@@ -26,7 +26,6 @@ def main():
     run_parser.add_argument("project", help="Project path")
     run_parser.add_argument("-i", "--input", nargs="*", dest="input", help="Project input for ask blocks")
     run_parser.add_argument("-H", "--headed", action="store_true", dest="headed", help="Whether to disable headless mode")
-    run_parser.add_argument("-R", "--raise", action="store_true", dest="raise_status", help="Whether to trigger an error if the exit code != '0'")
 
     args = parser.parse_args(namespace=Args())
 
