@@ -42,7 +42,6 @@
     let bindata = atob(data.replace(/_/g, '/').replace(/-/g, '+'));
     bindata = Uint8Array.from(bindata, c => c.charCodeAt(0));
     const output = [];
-    let get_tw_cli_var;
 
     const timeout = new URLSearchParams(window.location.search).get("timeout");
 
@@ -53,28 +52,6 @@
         const vm = scaffolding.vm;
         const runtime = vm.runtime;
         let done = false;
-        /**
-         * @param name {string}
-         * @param _default {string}
-         * @return {string}
-         */
-        get_tw_cli_var = (name, _default = undefined) => {
-            name = `TW-CLI: ${name}`;
-            const vars = runtime._stageTarget.variables;
-
-            for (let k in vars) {
-                let v = vars[k];
-                console.log(`${v.name} = ${v.value}`);
-                if (v.name === name) {
-                    console.log(`Found: ${v.value}`);
-                    return v.value;
-                }
-            }
-
-            console.log(`default: ${_default}`);
-
-            return _default.toString();  // we must always output a string.
-        }
 
         function exit(exitCode) {
             if (done) {
@@ -99,11 +76,12 @@
 
         /**
          *
-         * @param name
-         * @param procCodeArgs
-         * @param callback {function (string, any)}
+         * @param name {string}
+         * @param procCodeArgs {string}
+         * @param callback {function (string, any)?}
          */
         function registerConsoleOutputProc(name, procCodeArgs = '', callback=undefined) {
+            // noinspection JSUnresolvedReference
             vm.addAddonBlock({
                 procedureCode: `\u200B\u200B${name}\u200B\u200B${procCodeArgs}`,
                 arguments: ["content"],
