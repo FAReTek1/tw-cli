@@ -17,6 +17,10 @@
 <div id="project"></div>
 
 <script>
+    function delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     // Then scaffolding is exported as a global variable
     const scaffolding = new Scaffolding.Scaffolding();
 
@@ -40,6 +44,8 @@
     const output = [];
     let get_tw_cli_var;
 
+    const timeout = new URLSearchParams(window.location.search).get("timeout");
+
     (async () => {
         await scaffolding.loadProject(bindata);
         console.log("RUNTIME: Project loaded.");
@@ -52,7 +58,7 @@
          * @param _default {string}
          * @return {string}
          */
-        get_tw_cli_var = (name, _default=undefined) => {
+        get_tw_cli_var = (name, _default = undefined) => {
             name = `TW-CLI: ${name}`;
             const vars = runtime._stageTarget.variables;
 
@@ -70,8 +76,9 @@
             return _default.toString();  // we must always output a string.
         }
 
-        const exit = (msg = '', __override=undefined) => {
+        const exit = (__override = undefined) => {
             if (done) {
+                // If we already started the exit process, don't start queueing another
                 return;
             }
 
@@ -86,7 +93,7 @@
                 type: "exit_code",
                 content: exitCode,
             })
-            window.alert(`RUNTIME: PROJECT DONE: ${msg}`);
+            window.alert(`RUNTIME: PROJECT DONE`);
         }
 
         // following code is from goboscript.ide by aspizu
@@ -131,14 +138,14 @@
                     type: "breakpoint",
                     // util: util,
                 })
-                exit("BREAKPOINT", '1');
+                exit('1');
             }
         })
         vm.addAddonBlock({
             procedureCode: "\u200B\u200Bexit\u200B\u200B %s",
             arguments: ["content"],
             callback: ({content}, util) => {
-                exit("EXIT", content.toString());
+                exit(content.toString());
             }
         })
         runtime.addListener('QUESTION', () => {
@@ -158,6 +165,46 @@
         runtime.addListener('PROJECT_RUN_STOP', (question) => {
             exit("PROJECT_RUN_STOP");
         });
+
+        const logOnEvent = (type) => {
+            runtime.addListener(type, () => {
+                console.log(`RUNTIME EVENT: ${type}`);
+            });
+        }
+
+        // once the project is started and is ready to run, it should run
+        // it wont if it's empty (i think)
+        // add a time check, starting on PROJECT_START,
+        // and checking if PROJECT_RUN_START occurs within `timeout` milliseconds
+        runtime.addListener('PROJECT_START', async () => {
+            const time = Date.now();
+            console.log(`PROJECT_START: ${time}; WAITING FOR ${timeout}ms`);
+
+            let project_run_started = false;
+            runtime.addListener('PROJECT_RUN_START', () => {
+                project_run_started = true;
+            });
+
+            await delay(timeout);
+            if ((Date.now() - project_run_started) > timeout) {
+                console.log(`CHECKING PROJECT RUN STATUS: ${project_run_started}; T=${Date.now()}`)
+
+                if (!project_run_started) {
+                    output.push({
+                        type: "did_not_run",
+                        content: `Project failed to run within ${timeout} ms. Is it empty?`,
+                    })
+                    exit('', "1")
+                }
+            }
+        });
+
+        logOnEvent("PROJECT_START");
+        logOnEvent("PROJECT_RUN_START");
+        logOnEvent("VISUAL_REPORT");
+        logOnEvent("RUNTIME_STARTED");
+        logOnEvent("RUNTIME_DISPOSED");
+
         console.log("RUNTIME: PROJECT READY");
         scaffolding.greenFlag();
     })();

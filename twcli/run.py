@@ -12,7 +12,7 @@ from playwright.sync_api import sync_playwright
 CONSOLE = Console(force_terminal=True)
 
 class LogMessage(TypedDict):
-    type: Literal['log', 'warn', 'error', 'breakpoint', 'exit_code', 'say', 'think']
+    type: Literal['log', 'warn', 'error', 'breakpoint', 'exit_code', 'say', 'think', 'did_not_run']
     content: Optional[str]
 
 
@@ -48,6 +48,8 @@ def output_msg(msg: LogMessage):
             CONSOLE.print(f"Say: {content!r}", style="purple")
         case 'think':
             CONSOLE.print(f"Think: {content!r}", style="purple")
+        case 'did_not_run':
+            CONSOLE.print(f"{content}", style="red")
         case _:
             warnings.warn(f"Unknown message: {msg!r}")
             CONSOLE.print(f"{msg['type']}: {msg.get('content', '')!r}")
@@ -56,14 +58,19 @@ def output_msg(msg: LogMessage):
 def run(sb3_file: bytes,
         input_args_str: Optional[str] = None,
         *,
-        headless: bool = True) -> list[LogMessage]:
+        headless: bool = True,
+        timeout: int = 1000) -> list[LogMessage]:
     """
     Run a scratch project.
     :param sb3_file: Scratch project to run, in bytes
     :param input_args_str: arguments that are passed to any 'ask' ui, split by newlines. If these run out, then you will be prompted
     :param headless: Whether to run playwright in headless mode (whether to hide the window)
+    :param timeout: How long to wait for the project to run, after being ready. This is usually only relevant for empty projects.
     :return: List of log messages from scratch project
     """
+    assert isinstance(timeout, int)
+    assert timeout > 0
+
     input_args: list[str]
     if input_args_str is None:
         input_args = []
@@ -87,7 +94,8 @@ def run(sb3_file: bytes,
         assert tw_scaffolding_path.exists()
 
         page.goto(f"file://{run_html_path}"
-                  f"?project={base64.urlsafe_b64encode(sb3_file).decode()}")
+                  f"?project={base64.urlsafe_b64encode(sb3_file).decode()}"
+                  f"&timeout={timeout}")
 
         while True:
             if not page.query_selector("#project"):
