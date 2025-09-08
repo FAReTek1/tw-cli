@@ -119,11 +119,7 @@ def run(sb3_file: bytes,
             Handle and return output. If new messages are received, print them.
             """
             nonlocal output_i
-            try:
-                output = page.evaluate("output")
-            except Exception as e:
-                warnings.warn(f"Caught exception: {e}")
-                output = []
+            output = page.evaluate("output")
 
             while len(output) > output_i:
                 output_msg(output[output_i])
@@ -134,8 +130,9 @@ def run(sb3_file: bytes,
         while running:
             get_output()
 
+            # detect ask and wait block ui
             sc_input = page.query_selector(".sc-question-input")
             if sc_input is not None:
-                sc_input.type(get_arg() + '\n')
+                sc_input.type(get_arg() + '\n')  # \n to actually send the message to the ask block
 
         return get_output()
