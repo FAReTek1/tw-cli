@@ -64,7 +64,7 @@
                 type: "exit_code",
                 content: exitCode.toString(),
             })
-            window.alert(`RUNTIME: PROJECT DONE`);
+            // The Python code will look for exit_code messages and stop as soon as it finds one.
         }
 
         function consoleOutput(type, content = undefined) {

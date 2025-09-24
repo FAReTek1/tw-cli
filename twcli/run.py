@@ -102,17 +102,6 @@ def run(sb3_file: bytes,
             else:
                 break
 
-        running = True
-
-        def accept_all_dialogs(dialog):
-            # when a dialog pops up, we just exit. assume it's the end of the program
-            # if need be, assert the message in the dialog is correct.
-            nonlocal running
-            dialog.accept()
-            running = False
-
-        page.on("dialog", accept_all_dialogs)
-
         output_i = 0  # index of next message
 
         def get_output() -> list[LogMessage]:
@@ -128,14 +117,15 @@ def run(sb3_file: bytes,
 
             return output
 
-        while running:
-            get_output()
+        while True:
+            ret = get_output()
+            if any(msg["type"] == "exit_code" for msg in ret):
+                break
 
             # detect ask and wait block ui
             sc_input = page.query_selector(".sc-question-input")
             if sc_input is not None:
                 sc_input.type(get_arg() + '\n')  # \n to actually send the message to the ask block
 
-        ret = get_output()
         browser.close()
         return ret
