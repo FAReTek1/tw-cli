@@ -136,4 +136,6 @@ def run(sb3_file: bytes,
             if sc_input is not None:
                 sc_input.type(get_arg() + '\n')  # \n to actually send the message to the ask block
 
-        return get_output()
+        ret = get_output()
+        browser.close()
+        return ret
