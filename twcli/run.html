@@ -20,6 +20,10 @@
     function delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
+    const params = new URLSearchParams(window.location.search);
+    const username = params.get('username');
+    const projectId = params.get('project_id');
+    const cloudHost = params.get('cloud_host');
 
     // Then scaffolding is exported as a global variable
     const scaffolding = new Scaffolding.Scaffolding();
@@ -36,14 +40,17 @@
     console.log(elem);
     scaffolding.appendTo(elem);
 
+    scaffolding.setUsername(username);
+    const provider = new Scaffolding.CloudVariables.WebSocketProvider(cloudHost, projectId);
+    scaffolding.addCloudProvider(provider)
 
     // await scaffolding.loadProject();
-    const data = new URLSearchParams(window.location.search).get("project");
+    const data = params.get("project");
     let bindata = atob(data.replace(/_/g, '/').replace(/-/g, '+'));
     bindata = Uint8Array.from(bindata, c => c.charCodeAt(0));
     const output = [];
 
-    const timeout = new URLSearchParams(window.location.search).get("timeout");
+    const timeout = params.get("timeout");
 
     (async () => {
         await scaffolding.loadProject(bindata);
